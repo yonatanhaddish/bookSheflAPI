@@ -9,3 +9,7 @@ npx prisma init --datasource-provider sqlite
 ## create database and add models
 
 npx prisma db push
+
+## run seed and add into db
+
+npx prisma db seed

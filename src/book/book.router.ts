@@ -47,3 +47,27 @@ bookRouter.post("/",
         }
     }
 );
+
+// update a book
+bookRouter.put("/:id",
+    body("title").isString(),
+    body("isFiction").isBoolean(),
+    body("authorId").isInt(),
+    body("datePublished").isDate().toDate(),
+    async (request: Request, response: Response) => {
+        const errors = validationResult(request);
+        if (!errors.isEmpty()) {
+            return response.status(400).json({ error: errors.array()});
+        }
+        const id: number = parseInt(request.params.id, 10);
+        try {
+            const book = request.body;
+            const updatedBook = await BookService.updateBook(book, id);
+            return response.status(201).json(updatedBook);
+        } catch (error: any) {
+            console.log(error.message);
+            
+            return response.status(500).json(error.message);
+        }
+    }
+);

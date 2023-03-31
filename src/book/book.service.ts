@@ -88,3 +88,34 @@ export const createBook = async (book: BookWrite): Promise<BookRead> => {
         }
     });
 };
+
+export const updateBook = async (book: BookWrite, id: number): Promise<BookRead> => {
+    const { title, isFiction, datePublished, authorId } = book;
+    // const parsedDate: Date = new Date(datePublished);
+    return db.book.update({
+        where: {
+            id: id
+        },
+        data: {
+            title,
+            isFiction,
+            datePublished,
+            authorId
+        },
+        select: {
+            id: true,
+            title: true,
+            isFiction: true,
+            datePublished: true,
+            author: {
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    updatedAt: true,
+                    createdAt: true
+                }
+            }
+        }
+    })
+};

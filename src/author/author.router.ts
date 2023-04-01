@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import type { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 
@@ -68,3 +68,14 @@ authorRouter.put("/:id",
         }
     }
 );
+
+// DELETE: Delete an author by a given id
+authorRouter.delete("/:id", async (request: Request, response: Response) => {
+    const id: number = parseInt(request.params.id);
+    try {
+        await AuthorService.deleteAuthor(id);
+        return response.status(204).json("Successful: Author Deleted");
+    } catch (error: any) {
+        return response.status(500).json(error.message);
+    }
+});
